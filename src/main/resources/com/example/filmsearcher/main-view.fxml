@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="pannello" prefHeight="441.0" prefWidth="783.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.filmsearcher.MainController">
+    <HBox>
+        <VBox prefHeight="325.0" prefWidth="317.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <Label text="Film name:">
+                    <padding>
+                        <Insets right="50.0" />
+                    </padding>
+                </Label>
+                <TextField fx:id="filmNameField" promptText="enter film name here..." />
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <Label prefHeight="17.0" prefWidth="90.0" text="Adult:">
+                    <HBox.margin>
+                        <Insets left="12.0" />
+                    </HBox.margin>
+                </Label>
+                <CheckBox fx:id="isAdult" mnemonicParsing="false">
+                    <HBox.margin>
+                        <Insets left="100.0" right="70.0" />
+                    </HBox.margin>
+                </CheckBox>
+
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <Label text="Language:">
+                    <padding>
+                        <Insets right="50.0" />
+                    </padding>
+                </Label>
+                <ChoiceBox fx:id="languageChoice" prefWidth="150.0" />
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <Label text="Year:">
+                    <padding>
+                        <Insets right="50.0" />
+                    </padding>
+                </Label>
+                <TextField fx:id="filmYearField" promptText="enter film year here..." />
+            </HBox>
+            <Button fx:id="goButton" alignment="CENTER" mnemonicParsing="false" prefWidth="64.0" text="Search" textAlignment="CENTER" />
+        </VBox>
+        <ListView prefHeight="396.0" prefWidth="545.0" />
+
+    </HBox>
+</StackPane>
