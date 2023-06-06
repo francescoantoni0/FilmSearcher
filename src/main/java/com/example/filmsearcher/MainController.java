@@ -66,7 +66,18 @@ public class MainController implements Initializable {
             jsonParser(filename);
         });
 
-
+        listView.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                FilmResult film = listView.getSelectionModel().getSelectedItem();
+                FilmController controller = HelloApplication.filmController;
+                try {
+                    controller.setFilm(film);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                HelloApplication.filmStage.show();
+            }
+        });
     }
 
     private void jsonParser(String filename) {
@@ -87,7 +98,7 @@ public class MainController implements Initializable {
                 JsonObject film = (JsonObject) j;
                 String title = film.getString("title");
                 String overview = film.getString("overview");
-                String posterPath = film.get("poster_path").toString();
+                String posterPath = film.get("poster_path").toString().replace("\"", "");
                 String releaseDate = film.getString("release_date");
                 String voteAverage = film.getJsonNumber("vote_average").toString();
                 String originalLanguage = film.getString("original_language");

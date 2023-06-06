@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane fx:id="stack" alignment="TOP_CENTER" prefHeight="609.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.filmsearcher.FilmController">
+    <VBox alignment="CENTER">
+        <Label fx:id="filmTitle" alignment="CENTER" text="Film Title">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <padding>
+                <Insets bottom="20.0" top="40.0" />
+            </padding>
+        </Label>
+        <ImageView fx:id="filmCover" fitHeight="232.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+            <VBox.margin>
+                <Insets bottom="10.0" />
+            </VBox.margin>
+        </ImageView>
+        <TextArea fx:id="overview" editable="false" prefHeight="58.0" prefWidth="393.0" text="Overview: " wrapText="true">
+         <padding>
+            <Insets left="80.0" right="80.0" />
+         </padding></TextArea>
+        <Label fx:id="releaseDate" prefHeight="25.0" prefWidth="372.0" text="Release date: " />
+        <Label fx:id="voteAverage" layoutX="97.0" layoutY="409.0" prefHeight="25.0" prefWidth="372.0" text="Vote average: " />
+        <Label fx:id="origLang" layoutX="97.0" layoutY="409.0" prefHeight="25.0" prefWidth="372.0" text="Original language: " />
+    </VBox>
+
+</StackPane>

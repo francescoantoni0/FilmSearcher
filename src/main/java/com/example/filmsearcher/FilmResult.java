@@ -2,6 +2,7 @@ package com.example.filmsearcher;
 
 public class FilmResult {
     private String title, overview, posterPath, releaseDate, voteAverage, originalLanguage;
+    public static final String imgURL = "https://image.tmdb.org/t/p/original";
 
     public FilmResult(String title, String overview, String posterPath, String releaseDate, String voteAverage, String originalLanguage) {
         this.title = title;
