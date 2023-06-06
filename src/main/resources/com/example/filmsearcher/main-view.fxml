@@ -44,9 +44,19 @@
                 </Label>
                 <TextField fx:id="filmYearField" promptText="enter film year here..." />
             </HBox>
-            <Button fx:id="goButton" alignment="CENTER" mnemonicParsing="false" prefWidth="64.0" text="Search" textAlignment="CENTER" />
+         <ButtonBar prefHeight="40.0" prefWidth="200.0">
+           <buttons>
+               <Button fx:id="goButton" alignment="CENTER" mnemonicParsing="false" prefWidth="64.0" text="Search" textAlignment="CENTER" />
+           </buttons>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+            <padding>
+               <Insets right="10.0" />
+            </padding>
+         </ButtonBar>
         </VBox>
-        <ListView prefHeight="396.0" prefWidth="545.0" />
+        <ListView fx:id="listView" prefHeight="396.0" prefWidth="545.0" />
 
     </HBox>
 </StackPane>

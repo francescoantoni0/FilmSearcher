@@ -1,20 +1,20 @@
 package com.example.filmsearcher;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.skin.ProgressBarSkin;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 
-import java.io.IOException;
-import java.net.URI;
+import java.io.*;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ResourceBundle;
+import javax.json.*;
 
 public class MainController implements Initializable {
 
@@ -25,8 +25,11 @@ public class MainController implements Initializable {
     public Button goButton;
     public StackPane pannello;
 
-    private String url =
-            "https://api.themoviedb.org/3/search/movie?query=";
+    private String adultString, languageString, yearString, filmNameString, filename;
+
+    private String url = "https://api.themoviedb.org/3/search/movie?query=";
+
+    public ListView<FilmResult> listView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -34,29 +37,108 @@ public class MainController implements Initializable {
                 "pt-PT", "ru-RU", "ja-JP", "ko-KR", "hi-IN", "zh-CN", "ar-SA");
         languageChoice.setValue("en-US");
         goButton.setOnAction(this::doSearch);
+
     }
 
     public void doSearch(Event event) {
-        boolean adult = isAdult.isSelected();
-        String adultString = adult ? "true" : "false";
-        url += filmNameField.getText() + "&include_adult=" + adultString + "&language=" + languageChoice.getValue() + "&page=1";
+        filename = "response.json";
+        adultString = isAdult.isSelected() ? "true" : "false";
+        languageString = languageChoice.getValue();
+        yearString = filmYearField.getText();
+        filmNameString = filmNameField.getText();
+        String reqUrl = url + filmNameField.getText() + "&include_adult=" + adultString + "&language=" + languageChoice.getValue()
+                + "&page=1";
+        HttpReqService service = new HttpReqService();
         ProgressIndicator progressIndicator = new ProgressIndicator();
+        service.setUrl(reqUrl);
         pannello.getChildren().add(progressIndicator);
         progressIndicator.setProgress(-1);
-        Thread thread = new Thread(() -> {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://api.themoviedb.org/3/search/movie?query=gatsby&include_adult=true&language=en-US&page=1"))
-                    .header("accept", "application/json")
-                    .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3N2JmOTYzMGNlM2FkYjJlZWZjMWYyNDNkZjA5M2VmMSIsInN1YiI6IjY0N2RmNzQ4OTM4MjhlMDBkY2RkZWIyOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4uRczNbXzc7Sm1wHEvJlU7c15tkh2B8d20XB6ahiROc")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
-            HttpResponse<String> response = null;
+        progressIndicator.progressProperty().bind(service.createTask().progressProperty());
+        service.start();
+        service.setOnSucceeded(event1 -> {
+            pannello.getChildren().remove(progressIndicator);
             try {
-                response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+                HelloApplication.mainStage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            System.out.println(response.body());
+            jsonParser(filename);
         });
+
+
+    }
+
+    private void jsonParser(String filename) {
+        try (InputStream input = new FileInputStream(filename)) {
+            JsonReader reader = Json.createReader(input);
+            JsonObject root = reader.readObject();
+            JsonArray results = root.getJsonArray("results");
+            if (results.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("No results found");
+                alert.setContentText("No results found for the given parameters");
+                alert.showAndWait();
+                return;
+            }
+            ObservableList<FilmResult> filmList = FXCollections.observableArrayList();
+            for (JsonValue j : results) {
+                JsonObject film = (JsonObject) j;
+                String title = film.getString("title");
+                String overview = film.getString("overview");
+                String posterPath = film.get("poster_path").toString();
+                String releaseDate = film.getString("release_date");
+                String voteAverage = film.getJsonNumber("vote_average").toString();
+                String originalLanguage = film.getString("original_language");
+                FilmResult filmResult = new FilmResult(title, overview, posterPath, releaseDate, voteAverage,
+                        originalLanguage);
+                filmList.add(filmResult);
+            }
+            listView.setCellFactory(new Callback<>() {
+                @Override
+                public ListCell<FilmResult> call(ListView<FilmResult> filmResultListView) {
+                    return new ListCell<>() {
+                        @Override
+                        protected void updateItem(FilmResult filmResult, boolean empty) {
+                            super.updateItem(filmResult, empty);
+                            if (filmResult == null || empty) {
+                                setText(null);
+                            } else {
+                                setText(filmResult.getTitle());
+                            }
+                        }
+                    };
+                }
+            });
+            listView.refresh();
+            listView.setItems(filmList);
+            listView.refresh();
+
+        } catch (
+                IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public String getAdultString() {
+        return adultString;
+    }
+
+    public String getLanguageString() {
+        return languageString;
+    }
+
+    public String getYearString() {
+        return yearString;
+    }
+
+    public String getFilmNameString() {
+        return filmNameString;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
