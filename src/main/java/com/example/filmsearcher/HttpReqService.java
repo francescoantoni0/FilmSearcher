@@ -14,9 +14,7 @@ public class HttpReqService extends Service<Boolean> {
     final MainController m = HelloApplication.mainController;
     private String url;
 
-    private String apiKey = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3N2JmOTYzMGNl" +
-            "M2FkYjJlZWZjMWYyNDNkZjA5M2VmMSIsInN1YiI6IjY0N2RmNzQ4OTM4MjhlMDBkY2RkZWIyOSIsInNjb3BlcyI6Wy" +
-            "JhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4uRczNbXzc7Sm1wHEvJlU7c15tkh2B8d20XB6ahiROc";
+    private String apiKey = ""; //insert your key here
     @Override
     protected Task<Boolean> createTask() {
         return new Task<Boolean>() {
