@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javax.json.*;
 
+@SuppressWarnings("unused")
 public class MainController implements Initializable {
     public TextField filmNameField;
     public CheckBox isAdult;
