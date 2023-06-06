@@ -40,9 +40,7 @@ public class HelloApplication extends Application {
         filmController = fxmlLoader3.getController();
         filmStage.setScene(new Scene(root2));
         filmStage.setTitle("Film details");
-        filmStage.setOnCloseRequest(windowEvent -> {
-            filmController.reset();
-        });
+        filmStage.setOnCloseRequest(windowEvent -> filmController.reset());
     }
 
     public static void main(String[] args) {

@@ -2,32 +2,25 @@ package com.example.filmsearcher;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.WorkerStateEvent;
-
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
-
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javax.json.*;
 
 public class MainController implements Initializable {
-
     public TextField filmNameField;
     public CheckBox isAdult;
     public ChoiceBox<String> languageChoice;
     public TextField filmYearField;
     public Button goButton;
     public StackPane pannello;
-
     private String adultString, languageString, yearString, filmNameString, filename;
-
-    private String url = "https://api.themoviedb.org/3/search/movie?query=";
+    private final String url = "https://api.themoviedb.org/3/search/movie?query=";
 
     public ListView<FilmResult> listView;
 
