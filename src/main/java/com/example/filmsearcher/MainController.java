@@ -66,6 +66,15 @@ public class MainController implements Initializable {
             jsonParser(filename);
         });
 
+        service.setOnFailed(e -> {
+            pannello.getChildren().remove(progressIndicator);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("An error occurred while searching for the film");
+            alert.showAndWait();
+        });
+
         listView.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 FilmResult film = listView.getSelectionModel().getSelectedItem();

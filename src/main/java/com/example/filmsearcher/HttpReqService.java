@@ -30,6 +30,7 @@ public class HttpReqService extends Service<Boolean> {
                 service.setRequestMethod("GET");
                 service.setDoOutput(true);
                 if (service.getResponseCode() != 200) {
+                    failed();
                     throw new RuntimeException("Failed : HTTP error code : " + service.getResponseCode());
                 }
                 Files.copy(service.getInputStream(), new File("response.json").toPath(),
@@ -38,6 +39,11 @@ public class HttpReqService extends Service<Boolean> {
                 return true;
             }
         };
+    }
+
+    @Override
+    protected void failed() {
+        super.failed();
     }
 
     public void setUrl(String url) {
